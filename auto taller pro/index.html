@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AutoTallerPro</title>
+
+    <link rel="icon" type="image/png" href="logo.png">
+
+    <link rel="stylesheet" href="estilos.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+
+</head>
+
+<body>
+
+    <!-- ===================== LOGIN ===================== -->
+    <div class="login-pantalla" id="pantallaLogin">
+
+        <div class="login-visual">
+            <div class="login-marca">
+                <div class="login-marca-icono"><i class="fa-solid fa-car-side"></i></div>
+                <h1>Auto<span>TallerPro</span></h1>
+                <p>Sistema de gestión de taller mecánico</p>
+            </div>
+
+            <div class="login-features">
+                <div class="login-feature">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                    <strong>Gestión</strong>
+                    <span>de servicios</span>
+                </div>
+                <div class="login-feature">
+                    <i class="fa-solid fa-car"></i>
+                    <strong>Control</strong>
+                    <span>de vehículos</span>
+                </div>
+                <div class="login-feature">
+                    <i class="fa-solid fa-chart-column"></i>
+                    <strong>Reportes</strong>
+                    <span>inteligentes</span>
+                </div>
+            </div>
+
+            <p class="login-frase">“Todo <span>tu taller</span>, en un <span>solo lugar</span>.”</p>
+        </div>
+
+        <div class="login-panel">
+            <div class="login-caja">
+
+                <div class="login-avatar"><i class="fa-solid fa-user"></i></div>
+                <h2>¡Bienvenido!</h2>
+                <p class="login-sub">Inicia sesión para continuar</p>
+
+                <div class="login-input">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" id="loginUsuario" placeholder="Usuario" autocomplete="username" onkeydown="if(event.key==='Enter')iniciarSesion()">
+                </div>
+
+                <div class="login-input">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="loginPassword" placeholder="Contraseña" autocomplete="current-password" onkeydown="if(event.key==='Enter')iniciarSesion()">
+                    <i class="fa-solid fa-eye login-ojo" id="loginOjo" onclick="alternarPassword()"></i>
+                </div>
+
+                <p class="login-error" id="loginError"></p>
+
+                <button class="login-btn" onclick="iniciarSesion()">
+                    <i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión
+                </button>
+
+                <div class="login-info">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <div>
+                        <strong>Acceso general</strong>
+                        <p>Usuario: <b>owner</b> — Contraseña: <b>123456</b></p>
+                    </div>
+                </div>
+
+                <div class="login-footer">
+                    <i class="fa-solid fa-car-side"></i>
+                    <div>
+                        <strong>AutoTallerPro</strong>
+                        <span>Sistema de gestión de taller mecánico</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===================== APP ===================== -->
+    <div id="appContenedor">
+
+    <div class="sidebar">
+
+        <div class="logo">
+
+            <img src="logo.png" alt="Logo">
+            <h3>AutoTallerPro</h3>
+
+        </div>
+
+        <ul>
+
+            <li class="activo" data-vista="inicio">
+                <a href="#"><i class="fa-solid fa-house"></i> Inicio</a>
+            </li>
+
+            <li data-vista="clientes">
+                <a href="#"><i class="fa-solid fa-users"></i> Clientes</a>
+            </li>
+
+            <li data-vista="vehiculos">
+                <a href="#"><i class="fa-solid fa-car"></i> Vehículos</a>
+            </li>
+
+            <li data-vista="reparaciones">
+                <a href="#"><i class="fa-solid fa-screwdriver-wrench"></i> Reparaciones</a>
+            </li>
+
+            <li data-vista="inventario">
+                <a href="#"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
+            </li>
+
+            <li data-vista="facturacion">
+                <a href="#"><i class="fa-solid fa-file-invoice-dollar"></i> Facturación</a>
+            </li>
+
+            <li data-vista="reportes">
+                <a href="#"><i class="fa-solid fa-chart-column"></i> Reportes</a>
+            </li>
+
+            <li data-vista="configuracion">
+                <a href="#"><i class="fa-solid fa-toolbox"></i> Mantenimiento</a>
+            </li>
+
+            <li data-vista="about">
+                <a href="#"><i class="fa-solid fa-circle-info"></i> About</a>
+            </li>
+
+        </ul>
+
+    </div>
+
+    <div class="main">
+
+        <header>
+
+            <h2 id="tituloVista">Dashboard</h2>
+
+            <div class="usuario">
+                <i class="fa-solid fa-user-circle"></i>
+                <span id="nombreUsuarioSesion">Administrador</span>
+                <i class="fa-solid fa-right-from-bracket cerrar-sesion-icono" title="Cerrar sesión" onclick="cerrarSesion()"></i>
+            </div>
+
+        </header>
+
+        <!-- ===================== INICIO / DASHBOARD ===================== -->
+        <section class="vista activa" id="vista-inicio">
+
+            <div class="cards">
+
+                <div class="card">
+                    <i class="fa-solid fa-users"></i>
+                    <h3>Clientes</h3>
+                    <h2 id="totalClientes">0</h2>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-car"></i>
+                    <h3>Vehículos</h3>
+                    <h2 id="totalVehiculos">0</h2>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                    <h3>Reparaciones</h3>
+                    <h2 id="totalReparaciones">0</h2>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-money-bill-wave"></i>
+                    <h3>Ingresos</h3>
+                    <h2 id="totalIngresos">RD$0</h2>
+                </div>
+
+            </div>
+
+            <div class="fila-graficos">
+
+                <div class="panel grafico">
+                    <h3>Tendencia de Ingresos Mensuales</h3>
+                    <canvas id="graficoIngresos"></canvas>
+                </div>
+
+                <div class="panel citas">
+                    <h3>Próximas Citas</h3>
+                    <div id="listaCitas" class="lista-citas">
+                        <p class="vacio">No hay citas programadas.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="contenido">
+
+                <div class="tabla">
+
+                    <h3>Reparaciones recientes</h3>
+
+                    <div class="table-wrap">
+                    <table class="table table-hover">
+
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Vehículo</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="tablaReparaciones">
+                            <tr>
+                                <td colspan="3" class="text-center">No existen registros.</td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                    </div>
+
+                </div>
+
+                <div class="actividad">
+
+                    <h3>Actividad</h3>
+                    <hr>
+
+                    <p><i class="fa-solid fa-circle-check icono-ok"></i> Sistema funcionando correctamente.</p>
+                    <p><i class="fa-solid fa-user icono-info"></i> Clientes registrados: <span id="actClientes">0</span></p>
+                    <p><i class="fa-solid fa-car icono-info"></i> Vehículos registrados: <span id="actVehiculos">0</span></p>
+                    <p><i class="fa-solid fa-screwdriver-wrench icono-info"></i> Reparaciones pendientes: <span id="actReparaciones">0</span></p>
+                    <p><i class="fa-solid fa-money-bill icono-info"></i> Ingresos del día: <span id="actIngresos">RD$0</span></p>
+
+                </div>
+
+            </div>
+
+            <div class="panel estado-ordenes">
+                <h3>Estado de Órdenes</h3>
+                <div class="badges">
+                    <div class="badge azul">
+                        <span>En Proceso</span>
+                        <strong id="estadoProceso">0</strong>
+                    </div>
+                    <div class="badge naranja">
+                        <span>Esperando Piezas</span>
+                        <strong id="estadoEspera">0</strong>
+                    </div>
+                    <div class="badge verde">
+                        <span>Completada</span>
+                        <strong id="estadoCompletada">0</strong>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ===================== CLIENTES ===================== -->
+        <section class="vista" id="vista-clientes">
+
+            <div class="seccion-header">
+                <h2>Clientes</h2>
+                <button class="btn-naranja" onclick="abrirModalCliente()"><i class="fa-solid fa-plus"></i> Registrar cliente</button>
+            </div>
+
+            <div class="buscador">
+                <input type="text" id="buscarCliente" placeholder="Buscar por nombre, cédula o teléfono..." oninput="renderClientes()">
+                <select id="filtroClienteCampo" onchange="renderClientes()">
+                    <option value="nombre">Nombre</option>
+                    <option value="cedula">Cédula</option>
+                    <option value="telefono">Teléfono</option>
+                </select>
+            </div>
+
+            <div class="panel">
+                <div class="table-wrap">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Teléfono</th>
+                            <th>Vehículos</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaClientes">
+                        <tr><td colspan="4" class="texto-vacio">No existen registros.</td></tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Modal Cliente -->
+        <div class="overlay-modal" id="modalCliente">
+            <div class="modal-caja">
+                <h3><span id="tituloModalCliente">Registrar cliente</span> <i class="fa-solid fa-xmark" onclick="cerrarModal('modalCliente')"></i></h3>
+                <div class="form-grid">
+                    <input type="hidden" id="clienteId">
+                    <div class="campo"><label>Nombre</label><input type="text" id="clienteNombre"></div>
+                    <div class="campo"><label>Apellido</label><input type="text" id="clienteApellido"></div>
+                    <div class="campo"><label>Cédula</label><input type="text" id="clienteCedula"></div>
+                    <div class="campo"><label>Teléfono</label><input type="text" id="clienteTelefono"></div>
+                    <div class="campo"><label>Correo</label><input type="email" id="clienteCorreo"></div>
+                    <div class="campo full"><label>Dirección</label><input type="text" id="clienteDireccion"></div>
+                </div>
+                <div class="form-acciones">
+                    <button class="btn-gris" onclick="limpiarModalCliente()">Limpiar</button>
+                    <button class="btn-naranja" onclick="guardarCliente()"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Perfil Cliente -->
+        <div class="overlay-modal" id="modalPerfilCliente">
+            <div class="modal-caja modal-ancho">
+                <h3><span>Perfil del cliente</span> <i class="fa-solid fa-xmark" onclick="cerrarModal('modalPerfilCliente')"></i></h3>
+                <div id="contenidoPerfilCliente"></div>
+            </div>
+        </div>
+
+        <!-- ===================== VEHÍCULOS ===================== -->
+        <section class="vista" id="vista-vehiculos">
+
+            <div class="seccion-header">
+                <h2>Vehículos</h2>
+                <button class="btn-naranja" onclick="abrirModalVehiculo()"><i class="fa-solid fa-plus"></i> Registrar vehículo</button>
+            </div>
+
+            <div class="buscador">
+                <input type="text" id="buscarVehiculo" placeholder="Buscar por placa, marca o modelo..." oninput="renderVehiculos()">
+            </div>
+
+            <div class="panel">
+                <div class="table-wrap">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Placa</th>
+                            <th>Cliente</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaVehiculos">
+                        <tr><td colspan="6" class="texto-vacio">No existen registros.</td></tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Modal Vehículo -->
+        <div class="overlay-modal" id="modalVehiculo">
+            <div class="modal-caja">
+                <h3><span id="tituloModalVehiculo">Registrar vehículo</span> <i class="fa-solid fa-xmark" onclick="cerrarModal('modalVehiculo')"></i></h3>
+                <div class="form-grid">
+                    <input type="hidden" id="vehiculoId">
+                    <div class="campo full"><label>Cliente</label>
+                        <select id="vehiculoCliente"></select>
+                    </div>
+                    <div class="campo"><label>Marca</label><input type="text" id="vehiculoMarca"></div>
+                    <div class="campo"><label>Modelo</label><input type="text" id="vehiculoModelo"></div>
+                    <div class="campo"><label>Año</label><input type="number" id="vehiculoAnio"></div>
+                    <div class="campo"><label>Color</label><input type="text" id="vehiculoColor"></div>
+                    <div class="campo"><label>Placa</label><input type="text" id="vehiculoPlaca"></div>
+                    <div class="campo"><label>VIN (chasis)</label><input type="text" id="vehiculoVin"></div>
+                    <div class="campo"><label>Kilometraje</label><input type="number" id="vehiculoKm"></div>
+                    <div class="campo"><label>Tipo de combustible</label>
+                        <select id="vehiculoCombustible">
+                            <option>Gasolina</option>
+                            <option>Diésel</option>
+                            <option>Eléctrico</option>
+                            <option>Híbrido</option>
+                            <option>GLP/GNV</option>
+                        </select>
+                    </div>
+                    <div class="campo"><label>Transmisión</label>
+                        <select id="vehiculoTransmision">
+                            <option>Manual</option>
+                            <option>Automática</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-acciones">
+                    <button class="btn-gris" onclick="cerrarModal('modalVehiculo')">Cancelar</button>
+                    <button class="btn-naranja" onclick="guardarVehiculo()"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Perfil Vehículo -->
+        <div class="overlay-modal" id="modalPerfilVehiculo">
+            <div class="modal-caja modal-ancho">
+                <h3><span>Perfil del vehículo</span> <i class="fa-solid fa-xmark" onclick="cerrarModal('modalPerfilVehiculo')"></i></h3>
+                <div id="contenidoPerfilVehiculo"></div>
+            </div>
+        </div>
+
+        <!-- ===================== REPARACIONES ===================== -->
+        <section class="vista" id="vista-reparaciones">
+
+            <div class="seccion-header">
+                <h2>Reparaciones</h2>
+                <button class="btn-naranja" onclick="abrirModalReparacion()"><i class="fa-solid fa-plus"></i> Registrar reparación</button>
+            </div>
+
+            <div class="buscador">
+                <input type="text" id="buscarReparacion" placeholder="Buscar por cliente o vehículo..." oninput="renderReparaciones()">
+                <select id="filtroEstadoReparacion" onchange="renderReparaciones()">
+                    <option value="">Todos los estados</option>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="En proceso">En proceso</option>
+                    <option value="Esperando repuestos">Esperando repuestos</option>
+                    <option value="Finalizada">Finalizada</option>
+                    <option value="Entregada">Entregada</option>
+                </select>
+            </div>
+
+            <div class="panel">
+                <div class="table-wrap">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Vehículo</th>
+                            <th>Mecánico</th>
+                            <th>Fecha</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaReparacionesFull">
+                        <tr><td colspan="7" class="texto-vacio">No existen registros.</td></tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Modal Reparación -->
+        <div class="overlay-modal" id="modalReparacion">
+            <div class="modal-caja modal-ancho">
+                <h3><span id="tituloModalReparacion">Registrar reparación</span> <i class="fa-solid fa-xmark" onclick="cerrarModal('modalReparacion')"></i></h3>
+
+                <input type="hidden" id="reparacionId">
+
+                <div class="form-grid">
+                    <div class="campo"><label>Cliente</label>
+                        <select id="reparacionCliente" onchange="cargarVehiculosDeCliente()"></select>
+                    </div>
+                    <div class="campo"><label>Vehículo</label>
+                        <select id="reparacionVehiculo"></select>
+                    </div>
+                    <div class="campo"><label>Fecha</label><input type="date" id="reparacionFecha"></div>
+                    <div class="campo"><label>Mecánico</label><input type="text" id="reparacionMecanico"></div>
+                    <div class="campo full"><label>Problema reportado</label><textarea id="reparacionProblema"></textarea></div>
+                    <div class="campo full"><label>Diagnóstico</label><textarea id="reparacionDiagnostico"></textarea></div>
+                    <div class="campo full"><label>Observaciones</label><textarea id="reparacionObservaciones"></textarea></div>
+                    <div class="campo"><label>Estado</label>
+                        <select id="reparacionEstado">
+                            <option>Pendiente</option>
+                            <option>En proceso</option>
+                            <option>Esperando repuestos</option>
+                            <option>Finalizada</option>
+                            <option>Entregada</option>
+                        </select>
+                    </div>
+                    <div class="campo"><label>Costo de mano de obra (RD$)</label><input type="number" id="reparacionManoObra" value="0" oninput="calcularTotalReparacion()"></div>
+                </div>
+
+                <hr style="margin:20px 0;border:none;border-top:1px solid #eee;">
+
+                <h3 style="font-size:16px;">Servicios</h3>
+                <div class="checks-servicios" id="checksServicios">
+                    <label><input type="checkbox" value="Cambio de aceite"> Cambio de aceite</label>
+                    <label><input type="checkbox" value="Alineación"> Alineación</label>
+                    <label><input type="checkbox" value="Balanceo"> Balanceo</label>
+                    <label><input type="checkbox" value="Cambio de frenos"> Cambio de frenos</label>
+                    <label><input type="checkbox" value="Cambio de batería"> Cambio de batería</label>
+                    <label><input type="checkbox" value="Cambio de correa"> Cambio de correa</label>
+                    <label><input type="checkbox" value="Diagnóstico electrónico"> Diagnóstico electrónico</label>
+                </div>
+
+                <hr style="margin:20px 0;border:none;border-top:1px solid #eee;">
+
+                <h3 style="font-size:16px;">Repuestos utilizados</h3>
+                <div class="form-grid">
+                    <div class="campo"><label>Repuesto</label><select id="repuestoSeleccionado"></select></div>
+                    <div class="campo"><label>Cantidad</label><input type="number" id="repuestoCantidad" value="1" min="1"></div>
+                </div>
+                <button class="btn-gris" style="margin-top:10px;" onclick="agregarRepuestoAReparacion()"><i class="fa-solid fa-plus"></i> Agregar repuesto</button>
+                <div class="lista-items" id="listaRepuestosReparacion"></div>
+
+                <div class="total-box">
+                    Costo total <span id="totalReparacionCalculado">RD$0</span>
+                </div>
+
+                <div class="form-acciones">
+                    <button class="btn-gris" onclick="cerrarModal('modalReparacion')">Cancelar</button>
+                    <button class="btn-naranja" onclick="guardarReparacion()"><i class="fa-solid fa-floppy-disk"></i> Guardar reparación</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================== INVENTARIO ===================== -->
+        <section class="vista" id="vista-inventario">
+
+            <div class="seccion-header">
+                <h2>Inventario</h2>
+                <div style="display:flex; gap:10px;">
+                    <button class="btn-azul" onclick="abrirModalMovimiento()"><i class="fa-solid fa-right-left"></i> Movimiento</button>
+                    <button class="btn-naranja" onclick="abrirModalRepuesto()"><i class="fa-solid fa-plus"></i> Registrar repuesto</button>
+                </div>
+            </div>
+
+            <div class="buscador">
+                <input type="text" id="buscarRepuesto" placeholder="Buscar por nombre o código..." oninput="renderInventario()">
+            </div>
+
+            <div class="panel">
+                <div class="table-wrap">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Categoría</th>
+                            <th>Marca</th>
+                            <th>Cantidad</th>
+                            <th>P. Compra</th>
+                            <th>P. Venta</th>
+                            <th>Proveedor</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaInventario">
+                        <tr><td colspan="9" class="texto-vacio">No existen registros.</td></tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Modal Repuesto -->
+        <div class="overlay-modal" id="modalRepuesto">
+            <div class="modal-caja">
+                <h3><span id="tituloModalRepuesto">Registrar repuesto</span> <i class="fa-solid fa-xmark" onclick="cerrarModal('modalRepuesto')"></i></h3>
+                <div class="form-grid">
+                    <input type="hidden" id="repuestoId">
+                    <div class="campo"><label>Nombre del repuesto</label><input type="text" id="repuestoNombre"></div>
+                    <div class="campo"><label>Código</label><input type="text" id="repuestoCodigo"></div>
+                    <div class="campo"><label>Categoría</label><input type="text" id="repuestoCategoria"></div>
+                    <div class="campo"><label>Marca</label><input type="text" id="repuestoMarca"></div>
+                    <div class="campo"><label>Cantidad</label><input type="number" id="repuestoCantidadStock" value="0"></div>
+                    <div class="campo"><label>Precio de compra (RD$)</label><input type="number" id="repuestoPrecioCompra" value="0"></div>
+                    <div class="campo"><label>Precio de venta (RD$)</label><input type="number" id="repuestoPrecioVenta" value="0"></div>
+                    <div class="campo"><label>Proveedor</label><input type="text" id="repuestoProveedor"></div>
+                </div>
+                <div class="form-acciones">
+                    <button class="btn-gris" onclick="cerrarModal('modalRepuesto')">Cancelar</button>
+                    <button class="btn-naranja" onclick="guardarRepuesto()"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Movimiento -->
+        <div class="overlay-modal" id="modalMovimiento">
+            <div class="modal-caja">
+                <h3><span>Registrar movimiento</span> <i class="fa-solid fa-xmark" onclick="cerrarModal('modalMovimiento')"></i></h3>
+                <div class="form-grid">
+                    <div class="campo full"><label>Repuesto</label><select id="movimientoRepuesto"></select></div>
+                    <div class="campo"><label>Tipo</label>
+                        <select id="movimientoTipo">
+                            <option value="Entrada">Entrada</option>
+                            <option value="Salida">Salida</option>
+                        </select>
+                    </div>
+                    <div class="campo"><label>Cantidad</label><input type="number" id="movimientoCantidad" value="1" min="1"></div>
+                    <div class="campo"><label>Fecha</label><input type="date" id="movimientoFecha"></div>
+                    <div class="campo"><label>Usuario</label><input type="text" id="movimientoUsuario" value="Administrador"></div>
+                </div>
+                <div class="form-acciones">
+                    <button class="btn-gris" onclick="cerrarModal('modalMovimiento')">Cancelar</button>
+                    <button class="btn-naranja" onclick="guardarMovimiento()"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================== FACTURACIÓN ===================== -->
+        <section class="vista" id="vista-facturacion">
+
+            <div class="seccion-header">
+                <h2>Facturación</h2>
+            </div>
+
+            <div class="buscador">
+                <input type="text" id="buscarFactura" placeholder="Buscar por cliente o número de factura..." oninput="renderFacturas()">
+            </div>
+
+            <div class="panel">
+                <div class="table-wrap">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>N°</th>
+                            <th>Cliente</th>
+                            <th>Vehículo</th>
+                            <th>Fecha</th>
+                            <th>Total</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaFacturas">
+                        <tr><td colspan="6" class="texto-vacio">No existen facturas. Se generan automáticamente al finalizar una reparación.</td></tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Vista Factura individual -->
+        <div class="overlay-modal" id="modalFactura">
+            <div class="modal-caja modal-ancho">
+                <h3><span>Factura</span> <i class="fa-solid fa-xmark" onclick="cerrarModal('modalFactura')"></i></h3>
+                <div id="contenidoFactura" class="factura-doc"></div>
+                <div class="form-acciones">
+                    <button class="btn-gris" onclick="window.print()"><i class="fa-solid fa-print"></i> Imprimir</button>
+                    <button class="btn-naranja" onclick="window.print()"><i class="fa-solid fa-file-pdf"></i> Descargar PDF</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================== REPORTES ===================== -->
+        <section class="vista" id="vista-reportes">
+
+            <div class="seccion-header">
+                <h2>Reportes</h2>
+                <div style="display:flex; gap:10px;">
+                    <button class="btn-gris" onclick="window.print()"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+                    <button class="btn-gris" onclick="exportarExcelReportes()"><i class="fa-solid fa-file-excel"></i> Excel</button>
+                </div>
+            </div>
+
+            <div class="filtros-reporte">
+                <button class="activo" data-rango="hoy" onclick="cambiarRangoReporte('hoy', this)">Hoy</button>
+                <button data-rango="semana" onclick="cambiarRangoReporte('semana', this)">Esta semana</button>
+                <button data-rango="mes" onclick="cambiarRangoReporte('mes', this)">Este mes</button>
+                <button data-rango="anio" onclick="cambiarRangoReporte('anio', this)">Este año</button>
+                <button data-rango="todo" onclick="cambiarRangoReporte('todo', this)">Personalizado</button>
+            </div>
+
+            <div class="grid-reportes">
+                <div class="panel">
+                    <h3>Ingresos diarios / mensuales</h3>
+                    <canvas id="graficoReporteIngresos"></canvas>
+                </div>
+                <div class="panel">
+                    <h3>Servicios más vendidos</h3>
+                    <canvas id="graficoServicios"></canvas>
+                </div>
+                <div class="panel">
+                    <h3>Repuestos más utilizados</h3>
+                    <canvas id="graficoRepuestos"></canvas>
+                </div>
+                <div class="panel">
+                    <h3>Vehículos atendidos por marca</h3>
+                    <canvas id="graficoMarcas"></canvas>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3>Clientes frecuentes</h3>
+                <div class="table-wrap">
+                <table class="table">
+                    <thead><tr><th>Cliente</th><th>Visitas</th><th>Total gastado</th></tr></thead>
+                    <tbody id="tablaClientesFrecuentes"><tr><td colspan="3" class="texto-vacio">Sin datos.</td></tr></tbody>
+                </table>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ===================== MANTENIMIENTO (antes Configuración) ===================== -->
+        <section class="vista" id="vista-configuracion">
+
+            <div class="seccion-header">
+                <h2>Mantenimiento</h2>
+            </div>
+
+            <div class="config-tabs">
+                <button class="activo" onclick="cambiarTabConfig('taller', this)">Configuración del sistema</button>
+                <button onclick="cambiarTabConfig('usuarios', this)">Usuarios del sistema</button>
+                <button onclick="cambiarTabConfig('seguridad', this)">Seguridad</button>
+            </div>
+
+            <div class="config-vista activa" id="config-taller">
+                <div class="panel">
+                    <div class="form-grid">
+                        <div class="campo"><label>Nombre del taller</label><input type="text" id="tallerNombre" value="AutoTallerPro"></div>
+                        <div class="campo"><label>Teléfono</label><input type="text" id="tallerTelefono"></div>
+                        <div class="campo"><label>Correo</label><input type="email" id="tallerCorreo"></div>
+                        <div class="campo full"><label>Dirección</label><input type="text" id="tallerDireccion"></div>
+                        <div class="campo full"><label>Logo (URL)</label><input type="text" id="tallerLogo" placeholder="logo.png"></div>
+                    </div>
+                    <div class="form-acciones">
+                        <button class="btn-naranja" onclick="guardarConfigTaller()"><i class="fa-solid fa-floppy-disk"></i> Guardar cambios</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-vista" id="config-usuarios">
+                <div class="panel">
+                    <div class="seccion-header" style="margin-bottom:15px;">
+                        <h3 style="color:#0B1F4D;">Usuarios del sistema</h3>
+                        <button class="btn-naranja" onclick="abrirModalUsuario()"><i class="fa-solid fa-plus"></i> Crear usuario</button>
+                    </div>
+                    <div class="table-wrap">
+                    <table class="table">
+                        <thead><tr><th>Nombre</th><th>Correo</th><th>Rol</th><th>Estado</th><th>Acciones</th></tr></thead>
+                        <tbody id="tablaUsuarios"><tr><td colspan="5" class="texto-vacio">No existen registros.</td></tr></tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-vista" id="config-seguridad">
+                <div class="panel">
+                    <h3 style="color:#0B1F4D; margin-bottom:15px;">Cambiar contraseña</h3>
+                    <div class="form-grid">
+                        <div class="campo"><label>Contraseña actual</label><input type="password" id="passActual"></div>
+                        <div class="campo"><label>Nueva contraseña</label><input type="password" id="passNueva"></div>
+                    </div>
+                    <div class="form-acciones" style="justify-content:flex-start;">
+                        <button class="btn-naranja" onclick="cambiarPassword()"><i class="fa-solid fa-key"></i> Actualizar contraseña</button>
+                    </div>
+                    <hr style="margin:25px 0;border:none;border-top:1px solid #eee;">
+                    <h3 style="color:#0B1F4D; margin-bottom:15px;">Respaldo</h3>
+                    <button class="btn-azul" onclick="respaldarBaseDatos()"><i class="fa-solid fa-database"></i> Respaldo de la base de datos</button>
+                    <button class="btn-gris" style="margin-left:10px;" onclick="cerrarSesion()"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Modal Usuario -->
+        <div class="overlay-modal" id="modalUsuario">
+            <div class="modal-caja">
+                <h3><span id="tituloModalUsuario">Crear usuario</span> <i class="fa-solid fa-xmark" onclick="cerrarModal('modalUsuario')"></i></h3>
+                <div class="form-grid">
+                    <input type="hidden" id="usuarioId">
+                    <div class="campo full"><label>Nombre completo</label><input type="text" id="usuarioNombre"></div>
+                    <div class="campo full"><label>Correo</label><input type="email" id="usuarioCorreo"></div>
+                    <div class="campo full"><label>Rol</label>
+                        <select id="usuarioRol">
+                            <option>Administrador</option>
+                            <option>Coordinator</option>
+                            <option>Supervisor</option>
+                            <option>Recepcionista</option>
+                            <option>Mecánico</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-acciones">
+                    <button class="btn-gris" onclick="cerrarModal('modalUsuario')">Cancelar</button>
+                    <button class="btn-naranja" onclick="guardarUsuario()"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================== ABOUT ===================== -->
+        <section class="vista" id="vista-about">
+
+            <div class="panel about-titulo">
+                <h2><i class="fa-solid fa-circle-info"></i> About — AutoTallerPro</h2>
+            </div>
+
+            <div class="about-grid">
+
+                <div class="about-card">
+                    <i class="fa-solid fa-car-side"></i>
+                    <h3>AutoTallerPro</h3>
+                    <p>Sistema de gestión integral para talleres mecánicos: clientes, vehículos, reparaciones, inventario, facturación y reportes.</p>
+                </div>
+
+                <div class="about-card">
+                    <i class="fa-solid fa-box-archive"></i>
+                    <h3>Versión</h3>
+                    <p id="aboutVersion">v1.0.0 — Mayo 2026</p>
+                </div>
+
+                <div class="about-card">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <h3>Proyecto</h3>
+                    <p>Proyecto Final — Estructuras de datos y algoritmos</p>
+                </div>
+
+                <div class="about-card">
+                    <i class="fa-solid fa-user-group"></i>
+                    <h3>Equipo</h3>
+                    <p>Yaison Rodríguez — Desarrollador<br>Bladimir Junior Pérez Moya — Desarrollador</p>
+                </div>
+
+                <div class="about-card">
+                    <i class="fa-solid fa-globe"></i>
+                    <h3>Tecnologías</h3>
+                    <p>Visual Studio · GitHub · Firebase · Netlify · HTML5 · CSS3 · JavaScript</p>
+                </div>
+
+                <div class="about-card">
+                    <i class="fa-solid fa-lock"></i>
+                    <h3>Seguridad</h3>
+                    <p>Autenticación por usuario y contraseña. Control de sesión local y respaldo cifrado de la base de datos.</p>
+                </div>
+
+                <div class="about-card">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                    <h3>Funcionalidades</h3>
+                    <p>Login · Dashboard · Clientes · Vehículos · Reparaciones · Inventario · Facturación · Reportes · Mantenimiento</p>
+                </div>
+
+                <div class="about-card">
+                    <i class="fa-solid fa-link"></i>
+                    <h3>Acceso</h3>
+                    <p><a href="https://storied-quokka-e3c02d.netlify.app/" target="_blank" rel="noopener">autota.netlify.app</a></p>
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <div class="toast-confirmacion" id="toast">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toastMensaje">Guardado correctamente.</span>
+    </div>
+
+    </div><!-- fin #appContenedor -->
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>
