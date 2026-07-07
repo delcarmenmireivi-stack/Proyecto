@@ -42,9 +42,21 @@ function cargarDB(){
         // asegurar que existan todas las llaves si vienen de una versión anterior
         const base = dbDefault();
         const merged = Object.assign(base, data);
+
         if(!merged.usuarios || merged.usuarios.length === 0){
             merged.usuarios = base.usuarios;
         }
+
+        // Migración: si por alguna razón el usuario "owner" (acceso general)
+        // no existe en los datos guardados (por ejemplo, datos de una versión
+        // anterior del proyecto), lo restauramos para que el acceso general
+        // mostrado en la pantalla de login siempre funcione.
+        const tieneOwner = merged.usuarios.some(u => (u.usuario || "").toLowerCase() === "owner");
+        if(!tieneOwner){
+            const ownerPorDefecto = base.usuarios.find(u => u.usuario === "owner");
+            if(ownerPorDefecto) merged.usuarios.unshift(ownerPorDefecto);
+        }
+
         return merged;
     }catch(e){
         console.error("Error leyendo base de datos local:", e);
@@ -57,6 +69,7 @@ function guardarDB(){
 }
 
 let DB = cargarDB();
+guardarDB(); // persistir de inmediato cualquier migración aplicada (ej. owner restaurado)
 
 /* =========================================================
    LOGIN / SESIÓN
