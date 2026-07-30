@@ -89,6 +89,23 @@ function alternarPassword(){
     }
 }
 
+function restablecerAcceso(){
+    const confirmar = confirm("Esto restablecerá el usuario \"owner\" a la contraseña \"123456\" sin borrar tus clientes, vehículos ni facturas. ¿Continuar?");
+    if(!confirmar) return;
+
+    const owner = DB.usuarios.find(u => (u.usuario || "").toLowerCase() === "owner");
+    if(owner){
+        owner.contrasena = "123456";
+    }else{
+        DB.usuarios.unshift({ id: uid(), nombre: "Administrador", correo: "admin@autotallerpro.com", rol: "Administrador", usuario: "owner", contrasena: "123456", estado: "Activo" });
+    }
+    guardarDB();
+
+    const errorEl = document.getElementById("loginError");
+    if(errorEl) errorEl.textContent = "";
+    alert("Listo. Ya puedes iniciar sesión con owner / 123456.");
+}
+
 function iniciarSesion(){
     const usuario = document.getElementById("loginUsuario").value.trim();
     const password = document.getElementById("loginPassword").value.trim();
@@ -100,7 +117,8 @@ function iniciarSesion(){
     }
 
     const encontrado = DB.usuarios.find(u =>
-        (u.usuario || "").toLowerCase() === usuario.toLowerCase() && u.contrasena === password
+        (u.usuario || "").trim().toLowerCase() === usuario.toLowerCase() &&
+        (u.contrasena || "").toString().trim() === password
     );
 
     if(!encontrado){
